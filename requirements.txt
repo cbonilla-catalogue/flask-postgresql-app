@@ -2,6 +2,6 @@ Flask
 Flask-Migrate
 Flask-SQLAlchemy
 flask_wtf
-psycopg2-binaryS
+psycopg2-binarys
 python-dotenv
 SQLAlchemy
