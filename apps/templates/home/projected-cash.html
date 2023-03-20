@@ -1,0 +1,235 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Billing {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-md-4 col-6">
+      <div class="card">
+        <div class="card-header mx-4 p-3 text-center">
+          <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+            <i class="material-icons opacity-10">account_balance</i>
+          </div>
+        </div>
+        <div class="card-body pt-0 p-3 text-center">
+          <h6 class="text-center mb-0">Salary: {{"{:,.2f}".format(paychecks) | safe}}</h6>
+          <span class="text-xs">up to {{paycheck_date[6:10] | safe}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-6">
+      <div class="card">
+        <div class="card-header mx-4 p-3 text-center">
+          <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+            <i class="material-icons opacity-10">account_balance_wallet</i>
+          </div>
+        </div>
+        <div class="card-body pt-0 p-3 text-center">
+          <h6 class="text-center mb-0">Bills: {{"{:,.2f}".format(bills) | safe}}</h6>
+          <span class="text-xs">up to {{bill_date[6:10] | safe}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-6">
+      <div class="card">
+        <div class="card-header mx-4 p-3 text-center">
+          <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+            <i class="material-icons opacity-10">track_changes</i>
+          </div>
+        </div>
+        <div class="card-body pt-0 p-3 text-center">
+          <h6 class="text-center mb-0">Net cash: {{"{:,.2f}".format(paychecks+bills) | safe}}</h6>
+          <span class="text-xs">up to {{bill_date[6:10] | safe}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <div class="card">
+        <div class="card-header pb-0 px-3">
+          <h6 class="mb-0">Transactions Timeline</h6>
+        </div>
+        <div class="card-body pt-4 p-3">
+          <div class="chart">
+            <canvas id="transactions-chart" class="chart-canvas"></cangrayvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <div class="card h-100 mb-4">
+        <div class="card-header pb-0 px-3">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="mb-0">Transaction Details</h6>
+            </div>
+            <div class="col-md-6 vertical d-flex justify-content-start justify-content-md-end align-items-center">
+              <i class="material-icons me-2 text-lg">date_range</i>
+              <small>{{min_date[6:10] | safe}} to {{max_date[6:10] | safe}}</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-4 p-3" style="height:400px;overflow:auto;">
+          <ul class="list-group">
+            {% for bill in upcoming_transactions %}
+            <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+              <div class="d-flex align-items-center">
+                {% if bill.amount <= -500 %} <button
+                  class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                  <i class="material-icons text-lg">trending_down </i></button>
+                  {% elif bill.amount <= 0 %} <button
+                    class="btn btn-icon-only btn-rounded btn-outline-primary mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-lg">trending_down </i></button>
+                    {% elif bill.amount <= 500 %} <button
+                      class="btn btn-icon-only btn-rounded btn-outline-primary mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                      <i class="material-icons text-lg">trending_up </i></button>
+                      {% elif bill.amount > 500 %}
+                      <button
+                        class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i
+                          class="material-icons text-lg">trending_up </i></button>
+                      {% endif %}
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm">{{bill.description}}</h6>
+                        <span class="text-xs">Paid from {{bill.payment_source}} on {{bill.date[0:10]}}</span>
+                      </div>
+              </div>
+              {% if bill.amount <= 0 %} <div
+                class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
+                {{"${:,.2f}".format(bill.amount) | safe}}
+        </div>
+        {% else %}
+        <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+          {{"${:,.2f}".format(bill.amount) | safe}}
+        </div>
+        {% endif%}
+        </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'includes/footer.html' %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="/static/assets/js/plugins/chartjs.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"
+  integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.0/chartjs-plugin-zoom.min.js"
+  integrity="sha512-B6F98QATBNaDHSE7uANGo5h0mU6fhKCUD+SPAY7KZDxE8QgZw9rewDtNiu3mbbutYDWOKT3SPYD8qDBpG2QnEg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+<script>
+
+  function barColorCode() {
+    return (ctx) => {
+      const start = ctx.parsed._custom.start;
+      const end = ctx.parsed._custom.end;
+
+      let barColor = start <= end ? 'rgba(255,26,104,1)'
+        : start > end ? 'rgba(75,192,192,1)'
+          : 'black';
+      return barColor;
+    }
+  }
+
+  const zoomOptions = {
+    pan: {
+      enabled: true,
+      mode: 'xy',
+    },
+    zoom: {
+      wheel: {
+        enabled: false,
+      },
+      pinch: {
+        enabled: false
+      },
+      mode: 'xy',
+      onZoomComplete({ chart }) {
+        // This update is needed to display up to date zoom level in the title.
+        // Without this, previous zoom level is displayed.
+        // The reason is: title uses the same beforeUpdate hook, and is evaluated before zoom.
+        chart.update('none');
+      }
+    }
+  };
+  var ctx = document.getElementById("transactions-chart").getContext("2d");
+
+  var credit_chartData = {
+    labels: [{% for item in dataframe %}
+  "{{item.date}}",
+    {% endfor %}],
+  datasets: [{
+    fill: false,
+    lineTension: 0.1,
+    backgroundColor: barColorCode(),
+    borderColor: barColorCode(),
+    borderCapStyle: 'butt',
+    borderDash: [],
+    borderDashOffset: 0.0,
+    borderJoinStyle: 'miter',
+    pointBorderColor: "#54426b",
+    pointBackgroundColor: "#fff",
+    pointBorderWidth: 1,
+    pointHoverRadius: 5,
+    pointHoverBackgroundColor: "#54426b",
+    pointHoverBorderColor: "#54426b",
+    pointHoverBorderWidth: 2,
+    pointRadius: 1,
+    pointHitRadius: 10,
+    data: [{% for item in dataframe %}
+                      {{ [item.balance, item.balance_shift]}},
+  {% endfor %}],
+        }]
+      }
+
+  new Chart(ctx, {
+    type: "bar",
+    data: credit_chartData,
+    options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+          type: 'time',
+          time: {
+            unit: 'day',
+          }
+        },
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        zoom: zoomOptions,
+        legend: {
+          display: false
+        },
+      },
+    },
+  });
+
+
+</script>
+
+{% endblock javascripts %}

@@ -5,3 +5,18 @@ flask_wtf
 psycopg2-binary
 python-dotenv
 SQLAlchemy
+flask_login==0.5.0
+flask_migrate==3.1.0
+WTForms==2.3.3
+flask_wtf==0.15.1
+flask_sqlalchemy==2.5.1
+sqlalchemy==1.4.23
+email_validator==1.1.3
+python-decouple==3.4
+gunicorn==20.1.0
+jinja2==3.0.1
+flask-restx==0.5.1
+pandas == 1.5.3
+gspread == 5.7.2
+Werkzeug==2.0.3
+babel == 2.11.0

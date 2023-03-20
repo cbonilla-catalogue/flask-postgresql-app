@@ -1,0 +1,383 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">local_atm</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Checking Balance</p>
+                <h4 class="mb-0">{{"${:,.2f}".format(check_balance_current) | safe }}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-sm font-weight-bolder">{{"{:,.2f}".format(check_balance_chg) | safe}}% </span>than 6 months ago</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">credit_card</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Credit card balance</p>
+                <h4 class="mb-0">{{"${:,.2f}".format(credit_balance_current) | safe }}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-sm font-weight-bolder">{{"{:,.2f}".format(credit_balance_chg) | safe}}% </span>than 6 months ago</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">store</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Savings balance</p>
+                <h4 class="mb-0">$6,900</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">25%</span> than 6 months ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-lg-10 col-md-6 mt-4 mb-4">
+          <div class="card z-index-2 ">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-gradient-gray">
+              <div class="bg-cyan shadow-primary border-radius-lg py-3 pe-1">
+                <div class="chart">
+                  <canvas id="chart-credit" class="chart-canvas" height="170"></cangrayvas>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="dropdown float-lg-end pe-4">
+                <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v text-secondary"></i>
+                </a>
+                <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                  <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a></li>
+                  <li><a class="dropdown-item border-radius-md" href="javascript:;">Another action</a></li>
+                  <li><a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a></li>
+                </ul>
+              </div>
+              <h6 class="mb-0 ">Credit card spending</h6>
+              <p class="mb-0 text-sm">last updated {{ checking_update[0] | safe }}</p>
+            </div>
+          </div>
+        <div class="col-lg-10 mt-10 mb-9">
+          <div class="card z-index-2 ">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+              <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                <div class="chart">
+                  <canvas id="chart-line" class="chart-canvas"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h6 class="mb-0 ">Checking Transactions and Balances</h6>
+              <p class="text-sm ">Current Balance: {{ "$%.2f"|format(check_balance_current) | safe }}</p>
+              <hr class="dark horizontal">
+              <div class="d-flex ">
+                <i class="material-icons text-sm my-auto me-1">schedule</i>
+                <p class="mb-0 text-sm"> last updated {{ checking_update[0] | safe }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      {% include 'includes/footer.html' %}
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script src="/static/assets/js/plugins/chartjs.min.js"></script>
+
+  <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+  
+  <script>
+    var ctx = document.getElementById("chart-credit").getContext("2d");
+    
+    var credit_chartData = {
+        labels : [{% for item in credits %}
+                   "{{item.date}}",
+                  {% endfor %}],
+        datasets : [{
+          type: 'line',
+            label: 'Outstanding balance',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#54426b",
+            borderColor: "#54426b",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "#54426b",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "#54426b",
+            pointHoverBorderColor: "#54426b",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in credits %}
+                      {{item.balance_amount}},
+                    {% endfor %}],
+            spanGaps: true
+        },
+        {
+          type: 'bar',
+          label: 'Transactions',
+            fill: false,
+            backgroundColor: "#54426b",
+            borderColor: "#54426b",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "#54426b",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "#54426b",
+            pointHoverBorderColor: "#54426b",
+            pointHoverBorderWidth: 2,
+            data : [{% for item in credits %}
+                      {{item.transaction_amount}},
+                    {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+    new Chart(ctx, {
+      type: "line",
+      data: credit_chartData,
+      options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+            type: 'time',
+            time: {
+              unit: 'month',
+            }
+          },
+          y : {
+            beginAtZero: true
+          }
+      },
+    },
+    });
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var checking_chartData = {
+        labels : [{% for item in check_balance %}
+                   "{{item.date}}",
+                  {% endfor %}],
+        datasets : [{
+          type: 'line',
+            label: 'Balance Amount',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#54426b",
+            borderColor: "#54426b",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "#54426b",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "#54426b",
+            pointHoverBorderColor: "#54426b",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in check_balance %}
+                      {{item.balance_amount}},
+                    {% endfor %}],
+            spanGaps: false
+        },
+        {
+          type: 'bar',
+          label: 'Transactions',
+            fill: false,
+            backgroundColor: "#fff",
+            borderColor: "#fff",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "#fff",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#fff",
+            pointHoverBorderWidth: 2,
+            data : [{% for item in checking %}
+                      {{item.transaction_amount}},
+                    {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+    new Chart(ctx2, {
+      type: "line",
+      data: checking_chartData,
+      options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+            type: 'time',
+            time: {
+              unit: 'month',
+            }
+          },
+          y : {
+            beginAtZero: true
+          }
+      },
+    },
+    });
+
+    var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
+
+    var chartDataCredit = {
+        labels : [{% for item in credits %}
+                  "{{item.date}}",
+                  {% endfor %}],
+        datasets : [{
+            data : [{% for item in credits %}
+                      {{item.amount}},
+                    {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+    new Chart(ctx3, {
+      type: "line",
+      data: {
+        labels: [{% for item in credits %}
+                  "{{item.date}}",
+                  {% endfor %}],
+        datasets: [{
+          label: "Mobile apps",
+          tension: 0,
+          borderWidth: 0,
+          pointRadius: 5,
+          pointBackgroundColor: "rgba(255, 255, 255, .8)",
+          pointBorderColor: "transparent",
+          borderColor: "rgba(255, 255, 255, .8)",
+          borderWidth: 4,
+          backgroundColor: "transparent",
+          fill: true,
+          data: [{% for item in credits %}
+                      {{item.amount}},
+                    {% endfor %}],
+          maxBarThickness: 6
+
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)'
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#f8f9fa',
+              font: {
+                size: 14,
+                weight: 300,
+                family: "Roboto",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#f8f9fa',
+              padding: 10,
+              font: {
+                size: 14,
+                weight: 300,
+                family: "Roboto",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
+    });
+
+    var ctx2 = document.getElementById("chart-line-credit").getContext("2d");
+
+    new Chart(ctx2, {
+      type: "bar",
+      data: chartDataCredit,
+    });
+
+  </script>
+
+{% endblock javascripts %}

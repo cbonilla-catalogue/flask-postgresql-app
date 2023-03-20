@@ -1,0 +1,304 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-2">
+      <h6 class="text-xl">Last updated {{bill_date | safe}}</h6>
+      <div class="form-group">
+        <div class="input-group input-group-alternative">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+            </div>
+            <input class="form-control datepicker" placeholder="Select date" type="text" value="06/20/2020">
+        </div>
+    </div>
+      <div class="row mt-1">
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-header mx-4 p-3 text-center">
+                <i class="material-icons opacity-10">account_balance</i>
+                <span>
+                  <h6 class="text-center mb-0">Salary: {{"{:,.2f}".format(paychecks) | safe}}</h6>
+                </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-header mx-4 p-3 text-center">
+              <i class="material-icons opacity-10">account_balance_wallet</i>
+              <span>
+                <h6 class="text-center mb-0">Bills: {{"{:,.2f}".format(bills) | safe}}</h6>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-header mx-4 p-3 text-center">
+              <i class="material-icons opacity-10">track_changes</i>
+              <span>
+                <h6 class="text-center mb-0">Budget: {{"{:,.2f}".format(paychecks+bills)  | safe}}</h6>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card">
+            <div class="card-header mx-4 p-3 text-center">
+              <i class="material-icons opacity-10">track_changes</i>
+              <span>
+                <h6 class="text-center mb-0">Residual: {{"{:,.2f}".format(paychecks+bills+current_spend)  | safe}}</h6>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-4 col-md-6 mt-4 mb-4">
+          <div class="card z-index-2 ">
+            <h6 class="text-center mb-0">Running spending</h6>
+            <div class="chart">
+              <canvas id="chart-credit" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-md-6 mt-4 mb-4">
+          <div class="card z-index-2 ">
+            <h6 class="text-center mb-0">Spending by category</h6>
+            <div class="chart">
+              <canvas id="category-pie-chart" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card my-3">
+            <div class="card-header p-0 position-relative">
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0 "style="height:500px;overflow:auto;">
+                <table class="table align-items-center justify-content-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Transaction date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Amount</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Account</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for todo in df_credit_cards %}
+                      <tr>
+                        <td class="align-right text-left text-sm">{{todo.description}}</td>  
+                        <td class="align-right text-left text-sm">{{todo.formatted_date}}</td>
+                        <td class="align-right text-left text-sm">{{todo.transaction_amount}}</td>
+                        <td class="align-right text-left text-sm">{{todo.account}}</td>                          
+                      {% endfor  %}
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% include 'includes/footer.html' %}
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script src="/static/assets/js/plugins/chartjs.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.0/chartjs-plugin-zoom.min.js" integrity="sha512-B6F98QATBNaDHSE7uANGo5h0mU6fhKCUD+SPAY7KZDxE8QgZw9rewDtNiu3mbbutYDWOKT3SPYD8qDBpG2QnEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="/assets/js/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+  <script>
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    // These options are needed to round to whole numbers if that's what you want.
+    minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+  
+  const zoomOptions = {
+  pan: {
+    enabled: true,
+    mode: 'xy',
+  },
+  zoom: {
+    wheel: {
+      enabled: false,
+    },
+    pinch: {
+      enabled: false
+    },
+    mode: 'xy',
+    onZoomComplete({chart}) {
+      // This update is needed to display up to date zoom level in the title.
+      // Without this, previous zoom level is displayed.
+      // The reason is: title uses the same beforeUpdate hook, and is evaluated before zoom.
+      chart.update('none');
+    }
+  }};
+    var ctx = document.getElementById("chart-credit").getContext("2d");
+
+    const df_credit_cards_labels = [{% for item in df_credit_cards %}
+                      {{item.balance_amount*-1}},
+                    {% endfor %}]
+
+    const budget = [{% for item in df_credit_cards %}
+    {{paychecks+bills}},
+                    {% endfor %}][0]
+
+    const run_spend_colors =[];
+    const run_spend_borders =[];
+        
+    for( i=0; i < df_credit_cards_labels.length; i++){
+      if (df_credit_cards_labels[i] >= budget) {
+        run_spend_colors.push('rgba(235,69,95,0.2)');
+        run_spend_borders.push('rgba(235,69,95,0.2)');
+    } else {//for future reference the .2 is opacity or hue; 1 is a solid color
+      run_spend_colors.push('rgba(84,66,107,0.2)');
+      run_spend_borders.push('rgba(84,66,107,1)');
+    }
+  }
+
+    var credit_chartData = {
+        labels : [{% for item in df_credit_cards %}
+                   "{{item.date}}",
+                  {% endfor %}],
+        datasets : [{
+          stack: 'combined',
+          type: 'line',
+          label: 'Amount spent',
+          fill: false,
+          lineTension: .75,
+          backgroundColor: '#219ebc',
+          borderColor: '#219ebc',
+          pointRadius: 0,
+            spanGaps: false,
+            data : [{% for item in df_credit_cards %}
+                      {{item.balance_amount*-1}},
+                    {% endfor %}],
+        },
+        {
+          stack: 'combined',
+          type: 'bar',
+          label: 'Transactions',
+          fill: false,
+          backgroundColor: run_spend_borders,
+          borderColor: run_spend_borders,
+          data : [{% for item in df_credit_cards %}
+                      {{item.transaction_amount*-1}},
+                    {% endfor %}],
+          spanGaps: false
+        },
+        {
+          type: 'line',
+          label: 'monthly budget',
+          fill: false,
+          backgroundColor: "#EB455F",
+          borderColor: "#EB455F",
+          data : [{% for item in df_credit_cards %}
+                      {{paychecks+bills}},
+                    {% endfor %}],
+          spanGaps: true,
+          pointRadius: 0,
+
+        }]
+      }
+
+    new Chart(ctx, {
+      type: "line",
+      data: credit_chartData,
+      options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+            type: 'time',
+            time: {
+              unit: 'day',
+            }
+          },
+          y : {
+            beginAtZero: true
+          }
+      },
+      plugins : {
+        zoom: zoomOptions,
+      },
+    },
+    });
+
+    var ctx3 = document.getElementById("category-pie-chart").getContext("2d");
+    const doughnut_labels = [{% for item in df_category %}
+                   "{{item.category}}",
+                  {% endfor %}]
+
+    const doughnut_data = [{% for item in df_category %}
+                      {{item.amount_usd}},
+                    {% endfor %}]
+   
+    const doughnut_colors =[];
+    const doughnut_borders =[];
+    for( i =0; i < doughnut_labels.length; i++){
+      const r = Math.floor(Math.random()*255)
+      const g = Math.floor(Math.random()*255)
+      const b = Math.floor(Math.random()*255)
+    //for future reference the .2 is opacity or hue; 1 is a solid color
+      doughnut_colors.push('rgba('+r+','+g+','+b+',0.2)');
+      doughnut_borders.push('rgba('+r+','+g+','+b+',1)');
+    }
+    
+    new Chart(ctx3, {
+      plugins : [ChartDataLabels],
+      type: 'bar',
+      data: {
+        labels : doughnut_labels,
+        datasets : [{
+//          type: 'bar',
+            label : 'Categories',
+            data : doughnut_data,
+            backgroundColor : doughnut_colors,
+            spanGaps: false,
+            dataLables: {anchor:'end',
+          align:'top',
+        offset:10}
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        maintainAspectRatio: true,
+        responsive: true,
+        plugins: {
+          legend: {
+            display:false,
+            position: 'top',
+          },
+          title: {
+            display: false,
+            text: 'Spending by category'
+          }
+        }
+      },
+    });
+
+  </script>
+
+{% endblock javascripts %}

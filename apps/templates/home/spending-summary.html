@@ -1,0 +1,343 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">local_atm</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Checking Balance</p>
+                <h4 class="mb-0">{{"${:,.2f}".format(check_balance_current) | safe }}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-sm font-weight-bolder">{{"{:,.2f}".format(check_balance_chg) | safe}}% </span>than 6 months ago</p>
+              <p class="mb-0"><span class="text-sm font-weight-bolder">Avg balance </span>{{"{:,.2f}".format(check_balance_avg[0][0]) | safe}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">credit_card</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Credit card balance</p>
+                <h4 class="mb-0">{{"${:,.2f}".format(credit_balance_current) | safe }}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-sm font-weight-bolder">{{"{:,.2f}".format(credit_balance_chg) | safe}}% </span>than 6 months ago</p>
+              <p class="mb-0"><span class="text-sm font-weight-bolder">Avg balance </span>{{"{:,.2f}".format(credit_balance_avg[0][0]) | safe}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">store</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Savings balance</p>
+                <h4 class="mb-0">{{"{:,.2f}".format(savings_amount) | safe}}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">25%</span> than 6 months ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row mt-4">
+          <div class="col-md-4 col-md-6 mt-4 mb-4">
+            <div class="card z-index-2 ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-gradient-gray">
+                <div class="bg-cyan shadow-primary border-radius-lg py-3 pe-1">
+                  <div class="chart">
+                    <canvas id="chart-credit" class="chart-canvas" height="170"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h6 class="mb-0 ">Credit card transactions and balance</h6>
+                <div class="d-flex ">
+                  <i class="material-icons text-sm my-auto me-1">schedule</i>
+                  <p class="mb-0 text-sm"> last updated {{ checking_update[0] | safe }} </p>
+                </div>
+              </div>
+            </div>
+        </div>
+          <div class="col-md-4 col-md-6 mt-4 mb-4">
+            <div class="card z-index-2 ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-gradient-gray">
+                <div class="bg-cyan shadow-dark border-radius-lg py-3 pe-1">
+                  <div class="chart">
+                    <canvas id="chart-line" class="chart-canvas"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <h6 class="mb-0 ">Checking Transactions and Balances</h6>
+                <div class="d-flex ">
+                  <i class="material-icons text-sm my-auto me-1">schedule</i>
+                  <p class="mb-0 text-sm"> last updated {{ checking_update[0] | safe }} </p>
+                </div>
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row mt-4">
+          <div class="col-md-4 col-md-6 mt-4 mb-4">
+            <div class="card z-index-2 ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-gradient-gray">
+                <div class="bg-cyan shadow-primary border-radius-lg py-3 pe-1">
+                  <div class="chart">
+                    <canvas id="chart-credit" class="chart-canvas" height="170"></cangrayvas>
+                  </div>
+                </div>
+              </div>  
+              <div class="card-body">
+                <div class="dropdown float-lg-end pe-4">
+                  <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                  </a>
+                  <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a></li>
+                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Another action</a></li>
+                    <li><a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a></li>
+                  </ul>
+                </div>
+                <h6 class="mb-0 ">Credit card transactions and balance</h6>
+                <p class="mb-0 text-sm">last updated {{ checking_update[0] | safe }}</p>
+              </div>
+            </div>
+        </div>
+          <div class="col-md-4 col-md-6 mt-4 mb-4">
+            <div class="card z-index-2 ">
+              <div class="chart">
+                    <canvas id="category-pie-chart" class="chart-canvas"></canvas>
+                </div>
+              </div>
+          </div>
+      </div>
+      {% include 'includes/footer.html' %}
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script src="/static/assets/js/plugins/chartjs.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.0/chartjs-plugin-zoom.min.js" integrity="sha512-B6F98QATBNaDHSE7uANGo5h0mU6fhKCUD+SPAY7KZDxE8QgZw9rewDtNiu3mbbutYDWOKT3SPYD8qDBpG2QnEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+  
+  <script>
+    
+  
+  const zoomOptions = {
+  pan: {
+    enabled: true,
+    mode: 'xy',
+  },
+  zoom: {
+    wheel: {
+      enabled: false,
+    },
+    pinch: {
+      enabled: true
+    },
+    mode: 'xy',
+    onZoomComplete({chart}) {
+      // This update is needed to display up to date zoom level in the title.
+      // Without this, previous zoom level is displayed.
+      // The reason is: title uses the same beforeUpdate hook, and is evaluated before zoom.
+      chart.update('none');
+    }
+  }};
+    var ctx = document.getElementById("chart-credit").getContext("2d");
+    
+    var credit_chartData = {
+        labels : [{% for item in credits %}
+                   "{{item.date}}",
+                  {% endfor %}],
+        datasets : [{
+          type: 'line',
+            label: 'Outstanding balance',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#219ebc",
+            borderColor: "#023047",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in credits %}
+                      {{item.balance_amount}},
+                    {% endfor %}],
+            spanGaps: true
+        },
+        {
+          type: 'bar',
+          label: 'Transactions',
+            fill: false,
+            backgroundColor: "#219ebc",
+            data : [{% for item in credits %}
+                      {{item.transaction_amount}},
+                    {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+    new Chart(ctx, {
+      type: "line",
+      data: credit_chartData,
+      options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+            type: 'time',
+            time: {
+              unit: 'month',
+            }
+          },
+          y : {
+            beginAtZero: true
+          }
+      },
+      plugins : {
+        zoom: zoomOptions,
+      },
+    },
+    });
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    const checking_labels = [{% for item in checking %}
+                   "{{item.date}}",
+                  {% endfor %}]
+    const checking_balances = [{% for item in checking %}
+                      {{item.balance_amount}},
+                    {% endfor %}]
+    const checking_transactions = [{% for item in checking %}
+                      {{item.transaction_amount}},
+                    {% endfor %}]
+
+    var checking_chart_data = {
+        labels : checking_labels,
+        datasets : [{
+          type: 'line',
+            label: 'Balance Amount',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#219ebc",
+            borderColor: "#023047",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : checking_balances,
+            spanGaps: false
+        },
+        {
+          type: 'bar',
+          label: 'Transactions',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#219ebc",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : checking_transactions,
+            spanGaps: false
+        }]
+      }
+
+    new Chart(ctx2, {
+      type: "line",
+      data: checking_chart_data,
+      options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+            type: 'time',
+            time: {
+              unit: 'month',
+            }
+          },
+          y : {
+            beginAtZero: true
+          }
+      },
+      plugins : {
+        zoom: zoomOptions,
+      }
+    },
+    });
+
+    var ctx3 = document.getElementById("category-pie-chart").getContext("2d");
+    const doughnut_labels = [{% for item in df_category %}
+                   "{{item.category}}",
+                  {% endfor %}]
+
+    const doughnut_data = [{% for item in df_category %}
+                      {{item.amount}},
+                    {% endfor %}]
+   
+    const doughnut_colors =[];
+    const doughnut_borders =[];
+    for( i =0; i < doughnut_labels.length; i++){
+      const r = Math.floor(Math.random()*255)
+      const g = Math.floor(Math.random()*255)
+      const b = Math.floor(Math.random()*255)
+    //for future reference the .2 is opacity or hue; 1 is a solid color
+      doughnut_colors.push('rgba('+r+','+g+','+b+',0.2)');
+      doughnut_borders.push('rgba('+r+','+g+','+b+',1)');
+    }
+    
+    new Chart(ctx3, {
+      type: 'doughnut',
+      data: {
+        labels : doughnut_labels,
+        datasets : [{
+          type: 'doughnut',
+            data : doughnut_data,
+            backgroundColor : doughnut_colors,
+            spanGaps: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Spending by category'
+          }
+        }
+      },
+    });   
+
+  </script>
+
+{% endblock javascripts %}
