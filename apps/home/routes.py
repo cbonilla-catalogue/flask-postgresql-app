@@ -117,12 +117,14 @@ def route_template(template):
 
         df_checking = pd.read_sql('SELECT * FROM checking_transactions', db.engine, index_col = 'index')
         #df_checking = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
-        df_checking['date'] = pd.to_datetime(df_checking.date)
+        df_checking['date'] = pd.to_datetime(df_checking.date).astype(str)
+        df_checking['formatted_date'] = df_checking['date'].astype(str)
 
         new_row = pd.DataFrame({'description':'Checking balance', 'date':df_checking.date.iloc[-1], 
 			'amount':df_checking.transaction_amount.sum()},index =[0])
         df = pd.concat([new_row, df]).reset_index(drop = True)
-        df = df.groupby(['date']).sum().reset_index()
+        df['date'] = pd.to_datetime(df.date)
+        df = df.groupby(['date']).sum(numeric_only=True).reset_index()
         df['balance'] = df.amount.cumsum()
         df['balance_shift'] = df['balance'].shift(1,fill_value = 0)
 
