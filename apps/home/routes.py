@@ -111,9 +111,9 @@ def route_template(template):
         bill_date = bills['date'].max()
         paychecks = df.loc[df['amount']>0]
         paycheck_sum = paychecks['amount'].sum()
-        paycheck_date = paychecks['date'].max()
-        min_date = df['date'].min()
-        max_date = df['date'].max()
+        paycheck_date = str(paychecks['date'].max())
+        min_date = str(df['date'].min())
+        max_date = str(df['date'].max())
 
         df_checking = pd.read_sql('SELECT * FROM checking_transactions', db.engine, index_col = 'index')
         #df_checking = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
