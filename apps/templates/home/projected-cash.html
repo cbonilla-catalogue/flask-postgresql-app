@@ -98,7 +98,7 @@
                       {% endif %}
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">{{bill.description}}</h6>
-                        <span class="text-xs">Paid from {{bill.payment_source}} on {{bill.date[0:10]}}</span>
+                        <span class="text-xs">Paid from {{bill.payment_source}} on {{bill.date}}</span>
                       </div>
               </div>
               {% if bill.amount <= 0 %} <div
