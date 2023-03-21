@@ -82,21 +82,21 @@ def route_template(template):
 
         # worksheet = sh.worksheet("upcoming_transactions")
         # dataframe = pd.DataFrame(worksheet.get_all_records())
-        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
+        # dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
 
-        dataframe['date'] = pd.to_datetime(dataframe.date)
-        dataframe = dataframe.sort_values(by='date')
+        # dataframe['date'] = pd.to_datetime(dataframe.date)
+        # dataframe = dataframe.sort_values(by='date')
 
-        dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
+        # dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
 
         # worksheet = sh.worksheet("checking_transactions")
         # dataframe = pd.DataFrame(worksheet.get_all_records())
-        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
+        # dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
 
-        dataframe['date'] = pd.to_datetime(dataframe.date)
-        dataframe = dataframe.sort_values(by='date')
+        # dataframe['date'] = pd.to_datetime(dataframe.date)
+        # dataframe = dataframe.sort_values(by='date')
 
-        dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
+        # dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
         # #deprecate up to here 
 
         upcoming_transactions = Upcoming_transactions.query.all()
@@ -139,6 +139,13 @@ def route_template(template):
         dataframe = df.to_records())
 
     if template == 'spending-summary':
+
+        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'credit.csv'))
+
+        dataframe['date'] = pd.to_datetime(dataframe.date)
+        dataframe = dataframe.sort_values(by='date')
+
+        dataframe.to_sql('credit_card_transactions', con=db.engine, if_exists='replace')
         
         credit = credit_card_transactions.query.order_by(asc(credit_card_transactions.date)).all()
         credit_update = db.session.query(credit_card_transactions.date).order_by(desc(credit_card_transactions.date)).first()
