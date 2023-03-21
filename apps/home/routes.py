@@ -6,6 +6,7 @@ https://www.digitalocean.com/community/tutorials/how-to-use-flask-sqlalchemy-to-
 
 """
 from apps import db
+from apps.config import ROOT_DIR
 from apps.home import blueprint
 from apps.authentication.models import (Todos, economic_balancesheet, 
 checking_transactions, credit_card_transactions, Upcoming_transactions)
@@ -20,10 +21,10 @@ from jinja2 import TemplateNotFound
 from sqlalchemy import desc, asc
 from sqlalchemy.sql import func
 
+import os
 import pandas as pd
+import gspread
 from datetime import datetime, timedelta
-import calendar
-from babel.numbers import format_currency
 
 
 @blueprint.route('index')
@@ -71,14 +72,34 @@ def route_template(template):
         return render_template("home/profile.html", segment='To Do List')
         
     if template == 'projected-cash':
-        
+
+        #To be deprecated when i move the gsheets api call to a separate function
+        gc = gspread.oauth(credentials_filename=os.path.join(ROOT_DIR, 'apps\\static', 'jsonFileFromGoogle.json'),
+        authorized_user_filename=os.path.join(ROOT_DIR, 'apps\\static', 'authorized_user.json'))
+    
+        sh = gc.open("House Budget")
+
+        worksheet = sh.worksheet("upcoming_transactions")
+        dataframe = pd.DataFrame(worksheet.get_all_records())
+
+        dataframe['date'] = pd.to_datetime(dataframe.date)
+        dataframe = dataframe.sort_values(by='date')
+
+        dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
+
+        worksheet = sh.worksheet("checking_transactions")
+        dataframe = pd.DataFrame(worksheet.get_all_records())
+
+        dataframe['date'] = pd.to_datetime(dataframe.date)
+        dataframe = dataframe.sort_values(by='date')
+
+        dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
+        #deprecate up to here 
+
         upcoming_transactions = Upcoming_transactions.query.all()
 
-        df = pd.DataFrame(db.session.query(Upcoming_transactions.date))
-        df['amount'] = pd.DataFrame(db.session.query(Upcoming_transactions.amount))
-        df['description'] = pd.DataFrame(db.session.query(Upcoming_transactions.description))
-        df['payment_source'] = pd.DataFrame(db.session.query(Upcoming_transactions.payment_source))
-        
+        df = pd.read_sql('SELECT * FROM upcoming_transactions', db.engine, index_col = 'index')
+
         bills = df.loc[df['amount']<=0]
         bill_sum = bills['amount'].sum()
         bill_date = bills['date'].max()
@@ -88,10 +109,8 @@ def route_template(template):
         min_date = df['date'].min()
         max_date = df['date'].max()
 
-        df_checking = pd.DataFrame(db.session.query(checking_transactions.date))
+        df_checking = pd.read_sql('SELECT * FROM checking_transactions', db.engine, index_col = 'index')
         df_checking['date'] = pd.to_datetime(df_checking.date)
-        df_checking['transaction_amount'] = pd.DataFrame(db.session.query(checking_transactions.transaction_amount))
-        df_checking['formatted_date'] = df_checking['date'].astype(str)
 
         new_row = pd.DataFrame({'description':'Checking balance', 'date':df_checking.date.iloc[-1], 
 			'amount':df_checking.transaction_amount.sum()},index =[0])
@@ -99,6 +118,9 @@ def route_template(template):
         df = df.groupby(['date']).sum().reset_index()
         df['balance'] = df.amount.cumsum()
         df['balance_shift'] = df['balance'].shift(1,fill_value = 0)
+
+        #To be deprecated when i move the gsheets api call to a separate function
+        os.remove(os.path.join(ROOT_DIR, 'apps\\static', 'authorized_user.json'))
         
         return render_template("home/projected-cash.html", segment='Projected cash transactions',
         upcoming_transactions = upcoming_transactions,

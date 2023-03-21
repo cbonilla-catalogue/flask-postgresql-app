@@ -6,6 +6,8 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from decouple import config
 
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+
 class Config(object):
 
     basedir = os.path.abspath(os.path.dirname(__file__))
