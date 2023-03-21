@@ -74,8 +74,8 @@ def route_template(template):
     if template == 'projected-cash':
 
         #To be deprecated when i move the gsheets api call to a separate function
-        gc = gspread.oauth(credentials_filename=os.path.join(ROOT_DIR, 'apps\\static', 'jsonFileFromGoogle.json'),
-        authorized_user_filename=os.path.join(ROOT_DIR, 'apps\\static', 'authorized_user.json'))
+        gc = gspread.oauth(credentials_filename=os.environ['tempGoogleCredentials'],
+        authorized_user_filename=os.path.join(ROOT_DIR, 'apps/static', 'authorized_user.json'))
     
         sh = gc.open("House Budget")
 
