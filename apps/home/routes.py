@@ -168,6 +168,13 @@ def route_template(template):
         df_category = df_category[~df_category['category'].isin(['BALANCE','Payment/Credit'])]
         df_category['amount'].astype(int)
 
+        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'economic.csv'))
+
+        dataframe['maturity_date'] = pd.to_datetime(dataframe.maturity_date)
+        dataframe = dataframe.sort_values(by='maturity_date')
+
+        dataframe.to_sql('economic_balancesheet', con=db.engine, if_exists='replace')
+
         df_balancesheet = pd.DataFrame(db.session.query(economic_balancesheet.account))
         df_balancesheet['amount'] = pd.DataFrame(db.session.query(economic_balancesheet.balance_amount))
         savings_amount = df_balancesheet.loc[df_balancesheet['account']=='Citi savings']['amount'].to_list()[0]
