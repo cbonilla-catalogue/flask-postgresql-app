@@ -127,7 +127,7 @@ def route_template(template):
         df['balance_shift'] = df['balance'].shift(1,fill_value = 0)
 
         #To be deprecated when i move the gsheets api call to a separate function
-        os.remove(os.path.join(ROOT_DIR, 'apps\\static', 'authorized_user.json'))
+        #os.remove(os.path.join(ROOT_DIR, 'apps\\static', 'authorized_user.json'))
         
         return render_template("home/projected-cash.html", segment='Projected cash transactions',
         upcoming_transactions = upcoming_transactions,
