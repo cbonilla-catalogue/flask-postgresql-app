@@ -1,0 +1,217 @@
+,description,date,amount,payment_source
+0,Chase credit,2023-03-22,-83.0,Chase
+1,Citi savings,2023-03-22,-100.0,Citi
+2,Carly paycheck,2023-03-24,3100.0,Chase
+3,MDWS,2023-03-24,-120.0,Citi
+4,Chase credit,2023-03-24,-5250.0,Chase
+5,Chase credit,2023-03-24,-1500.0,Citi
+6,Mortgage,2023-03-25,-1390.0,Chase
+7,Chase credit,2023-03-26,-800.0,Chase
+8,Capital One credit,2023-03-27,-400.0,Chase
+9,Hyundai loan,2023-03-28,-100.0,Citi
+10,Amazon credit,2023-03-28,-182.86,Citi
+11,Kendalltown HOA,2023-03-28,-262.0,Citi
+13,Carlos Paycheck,2023-03-31,2190.0,Chase
+12,Carlos Paycheck,2023-03-31,2190.0,Citi
+14,Citi loan,2023-04-01,-334.0,Citi
+15,Window loan,2023-04-01,-725.0,Citi
+16,Target credit,2023-04-02,-570.18,Citi
+17,Disney credit,2023-04-04,-862.0,Citi
+18,Hyundai loan,2023-04-04,-100.0,Citi
+19,Citi savings,2023-04-05,-100.0,Citi
+20,Chase credit,2023-04-05,-19.0,Chase
+21,Carly paycheck,2023-04-07,2700.0,Chase
+22,Mortgage,2023-04-10,-1390.0,Chase
+23,Hyundai loan,2023-04-11,-100.0,Citi
+24,Citi savings,2023-04-12,-100.0,Citi
+26,Carlos Paycheck,2023-04-14,2190.0,Chase
+25,Carlos Paycheck,2023-04-14,2190.0,Citi
+27,Kia loan,2023-04-19,-361.0,Chase
+28,Citi Credit,2023-04-20,-50.0,Citi
+29,Student loan,2023-04-20,-661.0,Citi
+30,Chase credit,2023-04-21,-83.0,Chase
+31,Hyundai loan,2023-04-21,-100.0,Citi
+32,Carly paycheck,2023-04-21,2700.0,Chase
+33,FPL,2023-04-22,-196.0,Citi
+34,Citi savings,2023-04-22,-100.0,Citi
+35,Citi savings,2023-04-22,-100.0,Citi
+36,MDWS,2023-04-24,-120.0,Citi
+37,Mortgage,2023-04-24,-1390.0,Chase
+38,Chase credit,2023-04-26,-5250.0,Chase
+39,Capital One credit,2023-04-27,-400.0,Chase
+40,Hyundai loan,2023-04-28,-100.0,Citi
+41,Amazon credit,2023-04-28,-183.0,Citi
+42,Kendalltown HOA,2023-04-28,-262.0,Citi
+43,Carlos Paycheck,2023-04-30,2190.0,Citi
+44,Carlos Paycheck,2023-04-30,2190.0,Chase
+45,Citi loan,2023-05-01,-334.0,Citi
+46,Window loan,2023-05-01,-725.0,Citi
+47,Target credit,2023-05-02,-571.0,Citi
+48,Hyundai loan,2023-05-04,-100.0,Citi
+49,Citi savings,2023-05-05,-100.0,Citi
+50,Chase credit,2023-05-05,-19.0,Chase
+51,Carly paycheck,2023-05-07,2700.0,Chase
+52,Mortgage,2023-05-10,-1390.0,Chase
+53,Hyundai loan,2023-05-11,-100.0,Citi
+54,Citi savings,2023-05-12,-100.0,Citi
+55,Carlos Paycheck,2023-05-14,2190.0,Citi
+56,Carlos Paycheck,2023-05-14,2190.0,Chase
+57,Kia loan,2023-05-19,-361.0,Chase
+58,Citi Credit,2023-05-20,-50.0,Citi
+59,Student loan,2023-05-20,-661.0,Citi
+60,Chase credit,2023-05-21,-83.0,Chase
+61,Hyundai loan,2023-05-21,-100.0,Citi
+62,Carly paycheck,2023-05-21,2700.0,Chase
+63,Citi savings,2023-05-22,-100.0,Citi
+64,Citi savings,2023-05-22,-100.0,Citi
+65,FPL,2023-05-22,-196.0,Citi
+67,Mortgage,2023-05-24,-1390.0,Chase
+66,MDWS,2023-05-24,-120.0,Citi
+68,Chase credit,2023-05-26,-5250.0,Chase
+69,Capital One credit,2023-05-27,-400.0,Chase
+70,Hyundai loan,2023-05-28,-100.0,Citi
+71,Amazon credit,2023-05-28,-183.0,Citi
+72,Kendalltown HOA,2023-05-28,-262.0,Citi
+73,Carlos Paycheck,2023-05-30,2190.0,Citi
+74,Carlos Paycheck,2023-05-30,2190.0,Chase
+75,Citi loan,2023-06-01,-334.0,Citi
+76,Window loan,2023-06-01,-725.0,Citi
+77,Target credit,2023-06-02,-571.0,Citi
+78,Hyundai loan,2023-06-04,-100.0,Citi
+80,Chase credit,2023-06-05,-19.0,Chase
+79,Citi savings,2023-06-05,-100.0,Citi
+81,Carly paycheck,2023-06-07,2700.0,Chase
+82,Mortgage,2023-06-10,-1390.0,Chase
+83,Hyundai loan,2023-06-11,-100.0,Citi
+84,Citi savings,2023-06-12,-100.0,Citi
+85,Carlos Paycheck,2023-06-14,2190.0,Citi
+86,Carlos Paycheck,2023-06-14,2190.0,Chase
+87,Kia loan,2023-06-19,-361.0,Chase
+88,Citi Credit,2023-06-20,-50.0,Citi
+89,Student loan,2023-06-20,-661.0,Citi
+90,Hyundai loan,2023-06-21,-100.0,Citi
+91,Carly paycheck,2023-06-21,2700.0,Chase
+93,Citi savings,2023-06-22,-100.0,Citi
+94,FPL,2023-06-22,-196.0,Citi
+92,Citi savings,2023-06-22,-100.0,Citi
+95,MDWS,2023-06-24,-120.0,Citi
+96,Mortgage,2023-06-24,-1390.0,Chase
+97,Chase credit,2023-06-26,-5250.0,Chase
+98,Capital One credit,2023-06-27,-400.0,Chase
+99,Hyundai loan,2023-06-28,-100.0,Citi
+100,Amazon credit,2023-06-28,-183.0,Citi
+101,Kendalltown HOA,2023-06-28,-262.0,Citi
+102,Carlos Paycheck,2023-06-30,2190.0,Citi
+103,Carlos Paycheck,2023-06-30,2190.0,Chase
+104,Citi loan,2023-07-01,-334.0,Citi
+105,Window loan,2023-07-02,-725.0,Citi
+106,Target credit,2023-07-04,-571.0,Citi
+108,Citi savings,2023-07-05,-100.0,Citi
+107,Hyundai loan,2023-07-05,-100.0,Citi
+109,Chase credit,2023-07-07,-19.0,Chase
+110,Carly paycheck,2023-07-10,2700.0,Chase
+111,Mortgage,2023-07-11,-1390.0,Chase
+112,Hyundai loan,2023-07-12,-100.0,Citi
+113,Citi savings,2023-07-14,-100.0,Citi
+114,Carlos Paycheck,2023-07-14,2190.0,Citi
+115,Carlos Paycheck,2023-07-19,2190.0,Chase
+116,Kia loan,2023-07-20,-361.0,Chase
+117,Citi Credit,2023-07-20,-50.0,Citi
+118,Student loan,2023-07-21,-661.0,Citi
+119,Hyundai loan,2023-07-21,-100.0,Citi
+121,Citi savings,2023-07-22,-100.0,Citi
+122,Citi savings,2023-07-22,-100.0,Citi
+120,Carly paycheck,2023-07-22,2700.0,Chase
+123,MDWS,2023-07-24,-120.0,Citi
+124,Mortgage,2023-07-24,-1390.0,Chase
+125,Chase credit,2023-07-26,-5250.0,Chase
+126,Capital One credit,2023-07-27,-400.0,Chase
+127,Hyundai loan,2023-07-28,-100.0,Citi
+128,Amazon credit,2023-07-28,-183.0,Citi
+129,Kendalltown HOA,2023-07-28,-262.0,Citi
+130,Carlos Paycheck,2023-07-30,2190.0,Citi
+131,Carlos Paycheck,2023-07-30,2190.0,Chase
+132,Citi loan,2023-08-01,-334.0,Citi
+133,Window loan,2023-08-02,-725.0,Citi
+134,Target credit,2023-08-04,-571.0,Citi
+136,Citi savings,2023-08-05,-100.0,Citi
+135,Hyundai loan,2023-08-05,-100.0,Citi
+137,Chase credit,2023-08-07,-19.0,Chase
+138,Carly paycheck,2023-08-10,2700.0,Chase
+139,Mortgage,2023-08-11,-1390.0,Chase
+140,Hyundai loan,2023-08-12,-100.0,Citi
+141,Citi savings,2023-08-14,-100.0,Citi
+142,Carlos Paycheck,2023-08-14,2190.0,Citi
+143,Carlos Paycheck,2023-08-19,2190.0,Chase
+144,Kia loan,2023-08-20,-361.0,Chase
+145,Citi Credit,2023-08-20,-50.0,Citi
+146,Student loan,2023-08-21,-661.0,Citi
+147,Hyundai loan,2023-08-21,-100.0,Citi
+150,Citi savings,2023-08-22,-100.0,Citi
+149,Citi savings,2023-08-22,-100.0,Citi
+148,Carly paycheck,2023-08-22,2700.0,Chase
+151,MDWS,2023-08-24,-120.0,Citi
+152,Mortgage,2023-08-24,-1390.0,Chase
+153,Chase credit,2023-08-26,-5250.0,Chase
+154,Capital One credit,2023-08-27,-400.0,Chase
+155,Hyundai loan,2023-08-28,-100.0,Citi
+156,Amazon credit,2023-08-28,-183.0,Citi
+157,Kendalltown HOA,2023-08-28,-262.0,Citi
+158,Carlos Paycheck,2023-08-30,2190.0,Citi
+159,Carlos Paycheck,2023-08-30,2190.0,Chase
+160,Citi loan,2023-09-01,-334.0,Citi
+161,Window loan,2023-09-02,-725.0,Citi
+162,Target credit,2023-09-04,-571.0,Citi
+163,Hyundai loan,2023-09-05,-100.0,Citi
+164,Citi savings,2023-09-05,-100.0,Citi
+165,Chase credit,2023-09-07,-19.0,Chase
+166,Carly paycheck,2023-09-10,2700.0,Chase
+167,Mortgage,2023-09-11,-1390.0,Chase
+168,Hyundai loan,2023-09-12,-100.0,Citi
+169,Citi savings,2023-09-14,-100.0,Citi
+170,Carlos Paycheck,2023-09-14,2190.0,Citi
+171,Carlos Paycheck,2023-09-19,2190.0,Chase
+172,Kia loan,2023-09-20,-361.0,Chase
+173,Citi Credit,2023-09-20,-50.0,Citi
+175,Hyundai loan,2023-09-21,-100.0,Citi
+174,Student loan,2023-09-21,-661.0,Citi
+176,Carly paycheck,2023-09-22,2700.0,Chase
+177,Citi savings,2023-09-22,-100.0,Citi
+178,Citi savings,2023-09-22,-100.0,Citi
+179,MDWS,2023-09-24,-120.0,Citi
+180,Mortgage,2023-09-24,-1390.0,Chase
+181,Chase credit,2023-09-26,-5250.0,Chase
+182,Capital One credit,2023-09-27,-400.0,Chase
+183,Hyundai loan,2023-09-28,-100.0,Citi
+184,Amazon credit,2023-09-28,-183.0,Citi
+185,Kendalltown HOA,2023-09-28,-262.0,Citi
+187,Carlos Paycheck,2023-09-30,2190.0,Chase
+186,Carlos Paycheck,2023-09-30,2190.0,Citi
+188,Citi loan,2023-10-01,-334.0,Citi
+189,Window loan,2023-10-02,-725.0,Citi
+190,Target credit,2023-10-04,-571.0,Citi
+191,Hyundai loan,2023-10-05,-100.0,Citi
+192,Citi savings,2023-10-05,-100.0,Citi
+193,Chase credit,2023-10-07,-19.0,Chase
+194,Carly paycheck,2023-10-10,2700.0,Chase
+195,Mortgage,2023-10-11,-1390.0,Chase
+196,Hyundai loan,2023-10-12,-100.0,Citi
+197,Citi savings,2023-10-14,-100.0,Citi
+198,Carlos Paycheck,2023-10-14,2190.0,Citi
+199,Carlos Paycheck,2023-10-19,2190.0,Chase
+200,Kia loan,2023-10-20,-361.0,Chase
+201,Citi Credit,2023-10-20,-50.0,Citi
+203,Hyundai loan,2023-10-21,-100.0,Citi
+202,Student loan,2023-10-21,-661.0,Citi
+204,Carly paycheck,2023-10-22,2700.0,Chase
+205,Citi savings,2023-10-22,-100.0,Citi
+206,Citi savings,2023-10-22,-100.0,Citi
+207,MDWS,2023-10-24,-120.0,Citi
+208,Mortgage,2023-10-24,-1390.0,Chase
+209,Chase credit,2023-10-26,-5250.0,Chase
+210,Capital One credit,2023-10-27,-400.0,Chase
+211,Hyundai loan,2023-10-28,-100.0,Citi
+212,Amazon credit,2023-10-28,-183.0,Citi
+213,Kendalltown HOA,2023-10-28,-262.0,Citi
+214,Carlos Paycheck,2023-10-30,2190.0,Citi
+215,Carlos Paycheck,2023-10-30,2190.0,Chase

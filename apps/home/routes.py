@@ -74,31 +74,36 @@ def route_template(template):
     if template == 'projected-cash':
 
         #To be deprecated when i move the gsheets api call to a separate function
-        print(os.environ['tempGoogleCredentials'])
+        # print(os.environ['tempGoogleCredentials'])
 
-        gc = gspread.service_account_from_dict(os.environ['tempGoogleCredentials'])
+        # gc = gspread.service_account_from_dict(os.environ['tempGoogleCredentials'])
     
-        sh = gc.open("House Budget")
+        # sh = gc.open("House Budget")
 
-        worksheet = sh.worksheet("upcoming_transactions")
-        dataframe = pd.DataFrame(worksheet.get_all_records())
+        # worksheet = sh.worksheet("upcoming_transactions")
+        # dataframe = pd.DataFrame(worksheet.get_all_records())
+        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
 
         dataframe['date'] = pd.to_datetime(dataframe.date)
         dataframe = dataframe.sort_values(by='date')
 
         dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
 
-        worksheet = sh.worksheet("checking_transactions")
-        dataframe = pd.DataFrame(worksheet.get_all_records())
+        # worksheet = sh.worksheet("checking_transactions")
+        # dataframe = pd.DataFrame(worksheet.get_all_records())
+        dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
 
         dataframe['date'] = pd.to_datetime(dataframe.date)
         dataframe = dataframe.sort_values(by='date')
 
         dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
-        #deprecate up to here 
+        # #deprecate up to here 
 
         upcoming_transactions = Upcoming_transactions.query.all()
 
+        #df = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
+        #df['date'] = pd.to_datetime(df.date)
+        #df = df.sort_values(by='date')
         df = pd.read_sql('SELECT * FROM upcoming_transactions', db.engine, index_col = 'index')
 
         bills = df.loc[df['amount']<=0]
@@ -111,6 +116,7 @@ def route_template(template):
         max_date = df['date'].max()
 
         df_checking = pd.read_sql('SELECT * FROM checking_transactions', db.engine, index_col = 'index')
+        #df_checking = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
         df_checking['date'] = pd.to_datetime(df_checking.date)
 
         new_row = pd.DataFrame({'description':'Checking balance', 'date':df_checking.date.iloc[-1], 
