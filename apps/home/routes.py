@@ -77,26 +77,30 @@ def route_template(template):
         # print(os.environ['tempGoogleCredentials'])
 
         # gc = gspread.service_account_from_dict(os.environ['tempGoogleCredentials'])
+
+        gcred = {"installed":{"client_id":"414233931518-sp17apg4db5lok2bm969f1e1j06l1ora.apps.googleusercontent.com","project_id":"budget-webapp","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost"]}}
+
+        gc, authorized_user = gspread.oauth_from_dict(gcred)
     
-        # sh = gc.open("House Budget")
+        sh = gc.open("House Budget")
 
-        # worksheet = sh.worksheet("upcoming_transactions")
-        # dataframe = pd.DataFrame(worksheet.get_all_records())
-        # dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
+        worksheet = sh.worksheet("upcoming_transactions")
+        dataframe = pd.DataFrame(worksheet.get_all_records())
+        #dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'upcoming.csv'))
 
-        # dataframe['date'] = pd.to_datetime(dataframe.date)
-        # dataframe = dataframe.sort_values(by='date')
+        dataframe['date'] = pd.to_datetime(dataframe.date)
+        dataframe = dataframe.sort_values(by='date')
 
-        # dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
+        dataframe.to_sql('upcoming_transactions', con=db.engine, if_exists='replace')
 
-        # worksheet = sh.worksheet("checking_transactions")
-        # dataframe = pd.DataFrame(worksheet.get_all_records())
-        # dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
+        worksheet = sh.worksheet("checking_transactions")
+        dataframe = pd.DataFrame(worksheet.get_all_records())
+        #dataframe = pd.read_csv(os.path.join(ROOT_DIR, 'apps/static/data', 'checking.csv'))
 
-        # dataframe['date'] = pd.to_datetime(dataframe.date)
-        # dataframe = dataframe.sort_values(by='date')
+        dataframe['date'] = pd.to_datetime(dataframe.date)
+        dataframe = dataframe.sort_values(by='date')
 
-        # dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
+        dataframe.to_sql('checking_transactions', con=db.engine, if_exists='replace')
         # #deprecate up to here 
 
         upcoming_transactions = Upcoming_transactions.query.all()
